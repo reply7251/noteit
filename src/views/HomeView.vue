@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import MyCanvas from '@/components/MyCanvas.vue';
-import TheWelcome from '../components/TheWelcome.vue'
+import MyCanvas from "@/components/MyCanvas.vue";
 </script>
 
 <template>
@@ -9,7 +8,7 @@ import TheWelcome from '../components/TheWelcome.vue'
   </main>
 </template>
 
-<style>
+<style scoped>
 main {
   height: 100%;
   width: 100%;

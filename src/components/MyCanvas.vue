@@ -1,21 +1,51 @@
-<script setup lang="ts">
+<script lang="ts">
+import handleContextMenuEvent from '@/utils/ContextMenuEvent';
+import ContextMenu from './ContextMenu.vue';
 import NoteItem from './NoteItem.vue';
 import TextItem from './note_items/TextItem.vue';
-import ContextMenu from './ContextMenu.vue'
-import {ref} from 'vue'
+import SimpleSpan from './context_menu_actions/SimpleSpan.vue';
+import { useCounterStore } from '@/stores/counter';
 
-const canvas = ref(null);
+
+export default {
+    data() {
+        return {
+            children: [] as {id: string}[],
+            counter: useCounterStore()
+        }
+    },
+    mounted() {
+        this.addItem()
+    },
+    methods: {
+        contextMenu(e: MouseEvent) {
+            handleContextMenuEvent(e, this);
+        },
+        getActions(): ContextAction[] {
+            return [{component: SimpleSpan, label: "addItem", callback: this.addItem.bind(this)}]
+        },
+        addItem() {
+            this.children.push({ id: ""+this.counter.getAndIncrement() });
+        },
+        remove(index: number) {
+            this.children.splice(index,1);
+        },
+    },
+    components: {ContextMenu, NoteItem}
+}
+
+
 </script>
 
 <template>
     <ContextMenu v-slot="{contextmenu}">
-        <div class="canvas" @contextmenu="contextmenu">
-            <TextItem></TextItem>
+        <div class="canvas" @contextmenu="(e) => {contextMenu(e);contextmenu(e);}">
+            <NoteItem v-for="(value, index) in children" :key="value.id" :index="index" :removeFromParent="remove"></NoteItem>
         </div>
     </ContextMenu>
 </template>
 
-<style id="myCanvas">
+<style scoped>
 .canvas {
     background-color:black;
     height: 100%;

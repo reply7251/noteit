@@ -7,7 +7,7 @@ import AutoImport from 'unplugin-auto-import/vite'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    //vue(),
+    vue(),
     AutoImport({
       // targets to transform
       include: [
@@ -33,11 +33,6 @@ export default defineConfig({
           'axios': [
             // default imports
             ['default', 'axios'], // import { default as axios } from 'axios',
-          ],
-          '[package-name]': [
-            '[import-names]',
-            // alias
-            ['[from]', '[alias]'],
           ],
         },
         // example type import
