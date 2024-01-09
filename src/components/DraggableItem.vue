@@ -1,8 +1,6 @@
 <script lang="ts">
 
-
-
-export default defineComponent({
+const DraggableItem = defineComponent({
     data() {
         return {
             pos: {
@@ -81,9 +79,21 @@ export default defineComponent({
             } else if(pos.y > window.document.body.clientHeight - this.$el.height) {
                 pos.y = window.document.body.clientHeight - this.$el.height
             }
+        },
+        collide() {
+            
+        },
+        isOverlap(rect1: DOMRect, rect2: DOMRect) {
+            return !(rect1.right < rect2.left || 
+                rect1.left > rect2.right || 
+                rect1.bottom < rect2.top || 
+                rect1.top > rect2.bottom)
         }
     }
-})
+});
+
+export default DraggableItem;
+
 
 </script>
 
@@ -101,7 +111,7 @@ export default defineComponent({
     transform:translate(-50%, -50%);
     border: 1px solid white;
     border-radius: 10px;
-    padding: 10px;
+    padding: 0px;
 }
 /* 
 .draggable:hover {

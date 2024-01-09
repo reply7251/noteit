@@ -3,22 +3,25 @@ import NoteItem from '../NoteItem.vue'
 import handleContextMenuEvent from "@/utils/ContextMenuEvent"
 import SimpleSpan from '../context_menu_actions/SimpleSpan.vue'
 import type { ComponentPublicInstance } from 'vue'
+import MarkdownItem from './MarkdownItem.vue'
+import IconEye from '../icons/IconEye.vue'
+import IconEdit from '../icons/IconEdit.vue'
 
 export default defineComponent({
     extends: NoteItem,
     data() {
         return {
-            text: "insert Text",
-        }
+            data: "insert Text",
+            edit: true,
+            preview: true,
+        };
     },
     methods: {
         contextMenu(e: MouseEvent) {
-            
-            handleContextMenuEvent(e, this)
-            if(!e.targetComponent) {
+            handleContextMenuEvent(e, this);
+            if (!e.targetComponent) {
                 e.targetComponent = this;
             }
-            //e.stopPropagation()
         },
         getActions(): ContextAction[] {
             return [
@@ -26,18 +29,70 @@ export default defineComponent({
                     component: SimpleSpan,
                     label: "example span",
                     callback(e) {
-                        console.log("nothing")
+                        console.log("nothing");
                     },
                 }
-            ]
+            ];
+        },
+        toggleEdit() {
+            this.edit = !this.edit;
+        },
+        togglePreview() {
+            this.preview = !this.preview;
+        },
+        getPreview() {
+            return this.data;
         }
-    }
+    },
+    computed: {
+        opacityEditIcon() {
+            return this.edit ? {} : {opacity: '20%'};
+        },
+        opacityPreviewIcon() {
+            return this.preview ? {} : {opacity: '20%'};
+        },
+    },
+    components: { MarkdownItem, IconEye, IconEdit }
 })
 </script>
 
 <template>
     <div @contextmenu="contextMenu">
-        <input type="text" v-model="text" @mousedown.stop/>
-        <text>{{ index }}</text>
+        <IconEdit @click="toggleEdit" :style="opacityEditIcon"></IconEdit><IconEye @click="togglePreview" :style="opacityPreviewIcon"></IconEye><br>
+        <div class="flex">
+            <textarea v-show="edit" type="text" aria-multiline="true" v-model="data" @mousedown.stop/>
+            <MarkdownItem v-show="preview" :data="data">{{ getPreview() }}</MarkdownItem>
+        </div>
     </div>
 </template>
+
+<style scoped>
+svg {
+    float: right;
+
+    color: white;
+}
+
+div {
+    padding: 5px;
+    background-color: #202020;
+    border-radius: 5px;
+}
+div > * {
+    margin: 2px;
+}
+
+*:focus {
+    outline: none;
+}
+
+div > .flex {
+    display: flex;
+}
+
+.markdown {
+    border: 1px solid white;
+    border-radius: 5px;
+    color: white
+}
+</style>

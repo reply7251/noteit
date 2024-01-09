@@ -61,7 +61,9 @@ export default defineComponent({
 </script>
 
 <template>
-    <slot :contextmenu="showMenu"></slot>
+    <div @contextmenu="showMenu" class="hasMenu">
+        <slot></slot>
+    </div>
     <div class="contextMenu" v-show="contextMenu.visible" :style="getStyle" @mousedown.stop @contextmenu.prevent>
         <ul>
             <!-- <li>{{ eventData }}</li> -->
@@ -73,6 +75,10 @@ export default defineComponent({
 </template>
 
 <style scoped>
+.hasMenu {
+    height: 100%;
+}
+
 .contextMenu {
     z-index: 1000;
     display: block;

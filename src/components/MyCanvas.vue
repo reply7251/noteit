@@ -38,8 +38,8 @@ export default {
 </script>
 
 <template>
-    <ContextMenu v-slot="{contextmenu}">
-        <div class="canvas" @contextmenu="(e) => {contextMenu(e);contextmenu(e);}">
+    <ContextMenu>
+        <div class="canvas" @contextmenu="contextMenu">
             <NoteItem v-for="(value, index) in children" :key="value.id" :index="index" :removeFromParent="remove"></NoteItem>
         </div>
     </ContextMenu>

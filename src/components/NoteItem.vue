@@ -1,6 +1,6 @@
 <script lang="ts">
 import handleContextMenuEvent from '@/utils/ContextMenuEvent';
-import DragableItem from './DragableItem.vue';
+import DraggableItem from './DraggableItem.vue';
 import SimpleSpan from './context_menu_actions/SimpleSpan.vue';
 import {useCounterStore} from '@/stores/counter';
 
@@ -71,24 +71,24 @@ export default {
             this.removeFromParent?.(this.index);
         }
     },
-    components: { DragableItem }
+    components: { DraggableItem: DraggableItem }
 }
 
 
 </script>
 
 <template>
-    <DragableItem :enabled="draggable" @contextmenu="contextMenu" @contextmenu.prevent >
+    <DraggableItem :enabled="draggable" @contextmenu="contextMenu" @contextmenu.prevent >
         <div class="note-item">
             <component v-for="(value, index) in children" :key="value.id" :is="getTag(value)" :removeFromParent="remove" :index="index"></component>
         </div>
-    </DragableItem>
+    </DraggableItem>
 </template>
 
 <style scoped>
 .draggable {
-    opacity: 90%;
     background-color: #303030;
+    padding: 5px;
 }
 .note-item {
     min-width: 100px;
